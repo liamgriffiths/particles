@@ -17,12 +17,10 @@
   ],
   "author": "liam griffiths <liamgriffiths@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "browserify": "^7.0.2",
     "reactify": "^0.17.1",
-    "envify": "^3.2.0"
-  },
-  "dependencies": {
+    "envify": "^3.2.0",
     "simplex-noise": "^2.1.1",
     "react": "^0.12.1"
   }
