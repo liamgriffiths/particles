@@ -36,6 +36,7 @@ var Canvas = React.createClass({
   },
 
   handleTouchStart(event) {
+    event.PreventDefault();
     this.setTouch(event);
     this.touching = setInterval(_ => {
       this.animation.particleController.add(this.getTouch());
@@ -43,11 +44,13 @@ var Canvas = React.createClass({
   },
 
   handleTouchMove(event) {
+    event.PreventDefault();
     this.setTouch(event);
     this.animation.particleController.add(this.getTouch());
   },
 
   handleTouchEnd(event) {
+    event.PreventDefault();
     clearInterval(this.touching);
   },
 
