@@ -27,10 +27,9 @@ Particle.prototype = {
     this.ageRatio = (1 - (this.age / this.lifespan));
 
     var noise = simplex.noise3D(this.position.x, this.position.y, _GET_ELAPSED_TIME());
-    var angle = noise * 8.0;
 
-    // this.direction.x = Math.cos(angle);
-    // this.direction.y = Math.sin(angle);
+    // this.direction.x += this.direction.x * noise * 0.01;
+    // this.direction.y += this.direction.y * noise * 0.01;
 
     this.velocity.x *= this.decayRate + (noise * 0.01);
     this.velocity.y *= this.decayRate + (noise * 0.01);
@@ -39,7 +38,7 @@ Particle.prototype = {
     this.position.y += this.direction.y * this.velocity.y;
 
     this.age += 1.0 * this.decayRate;
-    this.size = this.ageRatio * this.size;
+    this.size *= this.ageRatio;
   },
 
   draw() {

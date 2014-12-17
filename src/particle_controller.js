@@ -12,7 +12,7 @@ ParticleController.prototype = {
   add(position) {
     var p = new Particle(this.ctx, {
       position: position,
-      velocity: {x: randFloat(1, 3), y: randFloat(1, 3)},
+      velocity: {x: randFloat(1, 5), y: randFloat(1, 5)},
       direction: {x: randFloat(-1, 1), y: randFloat(-1, 1)}
     });
     this.particles.push(p);
