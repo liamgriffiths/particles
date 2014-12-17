@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "particles",
   "main": "index.js",
+  "engines": {
+    "node": "0.11.x"
+  },
   "scripts": {
-    "serve": "node demo",
-    "watch": "watchify -t [reactify --es6] ./src/index.js -o ./demo/bundle.js"
+    "start": "node demo",
+    "postinstall": "npm run build",
+    "watch": "watchify -t [reactify --es6] ./src/index.js -o ./demo/bundle.js",
+    "build": "browserify -t [reactify --es6] ./src/index.js -o ./demo/bundle.js"
   },
   "keywords": [
     "particles"
@@ -15,10 +20,10 @@
   "devDependencies": {
     "browserify": "^7.0.2",
     "reactify": "^0.17.1",
-    "envify": "^3.2.0",
-    "react": "^0.12.1"
+    "envify": "^3.2.0"
   },
   "dependencies": {
-    "simplex-noise": "^2.1.1"
+    "simplex-noise": "^2.1.1",
+    "react": "^0.12.1"
   }
 }
