@@ -19,5 +19,6 @@
     "react": "^0.12.1"
   },
   "dependencies": {
+    "simplex-noise": "^2.1.1"
   }
 }
