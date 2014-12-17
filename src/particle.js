@@ -12,7 +12,7 @@ var Particle = function(ctx, opts) {
   this.velocity = opts.velocity;
   this.direction = opts.direction;
 
-  this.size = randFloat(5, 10);
+  this.size = randFloat(5, 20);
   this.age = 1;
   this.lifespan = Math.floor(randFloat(250, 650));
   this.decayRate = randFloat(0.95, 0.99);
