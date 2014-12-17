@@ -40,7 +40,7 @@ var Canvas = React.createClass({
     this.setTouch(event);
     this.touching = setInterval(_ => {
       this.animation.particleController.add(this.getTouch());
-    }, 10);
+    }, 2);
   },
 
   handleTouchMove(event) {

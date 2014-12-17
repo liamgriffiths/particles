@@ -19,9 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "browserify": "^7.0.2",
-    "reactify": "^0.17.1",
+    "chroma-js": "^0.6.2",
     "envify": "^3.2.0",
-    "simplex-noise": "^2.1.1",
-    "react": "^0.12.1"
+    "react": "^0.12.1",
+    "reactify": "^0.17.1",
+    "simplex-noise": "^2.1.1"
   }
 }
