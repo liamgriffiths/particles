@@ -3,9 +3,6 @@ var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 var chroma = require('chroma-js');
 
-var PURPLISH = 'rgb(100, 100, 150)';
-var WHITE = 'rgb(255, 255, 255)';
-
 var Particle = function(ctx, opts) {
   this.ctx = ctx;
   this.position = opts.position
@@ -17,8 +14,8 @@ var Particle = function(ctx, opts) {
   this.lifespan = Math.floor(randFloat(250, 650));
   this.decayRate = randFloat(0.95, 0.99);
   this.ageRatio = 1;
-  this.colors = chroma.scale([WHITE, PURPLISH])
-    .domain([this.age, this.lifespan], 9, 'log');
+  this.colors = chroma.scale(['white', 'magenta'])
+    .domain([this.age, this.lifespan], 15, 'log');
 };
 
 Particle.prototype = {
