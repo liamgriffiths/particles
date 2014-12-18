@@ -1,7 +1,7 @@
 var Particle = require('./particle');
 var {randFloat} = require('./helpers');
 
-var COLORS = ['magenta', 'cyan', 'tomato', 'limegreen', 'linen', 'orchid'];
+var COLORS = ['magenta', 'cyan', 'limegreen', 'lemonchiffon', 'red'];
 
 var ParticleController = function(ctx, opts) {
   this.ctx = ctx;
