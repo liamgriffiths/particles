@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node server",
     "postinstall": "npm run build",
-    "watchify": "watchify -t [reactify --es6] ./src/index.js -o ./build/bundle.js --verbose",
+    "watchify": "watchify -t [reactify --es6] ./src/index.js -o ./bundle.js --verbose",
     "build": "browserify -t [reactify --es6] ./src/index.js | uglifyjs -mc 2> /dev/null 1> bundle.js"
   },
   "keywords": [
@@ -17,12 +17,13 @@
   "author": "liam griffiths <liamgriffiths@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "browserify": "^7.0.2",
-    "chroma-js": "^0.6.2",
-    "envify": "^3.2.0",
-    "react": "^0.12.1",
-    "reactify": "^0.17.1",
-    "simplex-noise": "^2.1.1",
-    "uglify-js": "^2.4.16"
+    "browserify": "7.0.2",
+    "chroma-js": "0.6.2",
+    "envify": "3.2.0",
+    "immutable": "3.4.0",
+    "react": "0.12.1",
+    "reactify": "0.17.1",
+    "simplex-noise": "2.1.1",
+    "uglify-js": "2.4.16"
   }
 }

@@ -14,6 +14,7 @@ var Particle = function(ctx, opts) {
   this.lifespan = Math.floor(randFloat(250, 650));
   this.decayRate = randFloat(0.95, 0.99);
   this.ageRatio = 1;
+
   this.colors = chroma.scale(['white', opts.color])
     .domain([this.age, this.lifespan], 15, 'log');
 };
@@ -27,9 +28,6 @@ Particle.prototype = {
     this.ageRatio = (1 - (this.age / this.lifespan));
 
     var noise = simplex.noise3D(this.position.x, this.position.y, _GET_ELAPSED_TIME());
-
-    // this.direction.x += this.direction.x * noise * 0.01;
-    // this.direction.y += this.direction.y * noise * 0.01;
 
     this.velocity.x *= this.decayRate + (noise * 0.01);
     this.velocity.y *= this.decayRate + (noise * 0.01);

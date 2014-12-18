@@ -1,8 +1,7 @@
 var React = require('react');
 var Animation = require('./animation');
-var {requestAnimationFrame} = require('./helpers');
-
-var BLACK = '#000';
+var {requestAnimationFrame, Point} = require('./helpers');
+var {List} = require('immutable');
 
 var Canvas = React.createClass({
   propTypes: {
@@ -16,7 +15,7 @@ var Canvas = React.createClass({
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    canvas.style.background = BLACK;
+    canvas.style.background = '#000';
 
     this.animation = new Animation(ctx, {
       width: canvas.width,
@@ -28,29 +27,19 @@ var Canvas = React.createClass({
   },
 
   setTouches(event) {
-    var touches = event.touches;
-    this.touches = [];
-    for (var i = 0; i < touches.length; i++) {
-      this.touches.push({
-        x: touches[i].pageX,
-        y: touches[i].pageY
-      });
-    }
+    this._touches = new List([].slice.apply(event.touches));
   },
 
   getTouches() {
-    return this.touches || [];
+    return (this._touches || [])
+      .map(touch => new Point({ x: touch.pageX, y: touch.pageY }));
   },
 
   handleInputs() {
-    var touches = this.getTouches();
-    for (var i = 0; i < touches.length; i++) {
-      this.animation.particleController.add({
-        x: touches[i].x,
-        y: touches[i].y
-      }, i);
-    }
-    requestAnimationFrame(this.handleInputs);
+    this.getTouches()
+      .forEach((point, i) => this.animation.particleController.add(point, i));
+
+    return requestAnimationFrame(this.handleInputs);
   },
 
   handleTouchStart(event) {
