@@ -3,7 +3,7 @@ var fs = require('fs');
 
 var assets = {
   '/': __dirname + '/index.html',
-  '/bundle.js': __dirname + '/build/bundle.js'
+  '/bundle.js': __dirname + '/bundle.js'
 };
 
 var port = process.env.PORT || 3000;

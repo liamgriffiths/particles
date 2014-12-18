@@ -9,7 +9,7 @@
     "start": "node server",
     "postinstall": "npm run build",
     "watchify": "watchify -t [reactify --es6] ./src/index.js -o ./build/bundle.js --verbose",
-    "build": "browserify -t [reactify --es6] ./src/index.js -o ./build/bundle.js"
+    "build": "browserify -t [reactify --es6] ./src/index.js | uglifyjs -mc >bundle.js"
   },
   "keywords": [
     "particles"
