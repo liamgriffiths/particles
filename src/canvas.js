@@ -45,7 +45,10 @@ var Canvas = React.createClass({
   handleInputs() {
     var touches = this.getTouches();
     for (var i = 0; i < touches.length; i++) {
-      this.animation.particleController.add({x: touches[i].x, y: touches[i].y});
+      this.animation.particleController.add({
+        x: touches[i].x,
+        y: touches[i].y
+      }, i);
     }
     requestAnimationFrame(this.handleInputs);
   },

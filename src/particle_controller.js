@@ -1,6 +1,8 @@
 var Particle = require('./particle');
 var {randFloat} = require('./helpers');
 
+var COLORS = ['magenta', 'cyan', 'firebrick', 'mintcream', 'thistle'];
+
 var ParticleController = function(ctx, opts) {
   this.ctx = ctx;
   this.width = opts.width;
@@ -9,11 +11,12 @@ var ParticleController = function(ctx, opts) {
 };
 
 ParticleController.prototype = {
-  add(position) {
+  add(position, color) {
     var p = new Particle(this.ctx, {
       position: position,
       velocity: {x: randFloat(1, 5), y: randFloat(1, 5)},
-      direction: {x: randFloat(-1, 1), y: randFloat(-1, 1)}
+      direction: {x: randFloat(-1, 1), y: randFloat(-1, 1)},
+      color: COLORS[color % COLORS.length]
     });
     this.particles.push(p);
   },

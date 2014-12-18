@@ -14,7 +14,7 @@ var Particle = function(ctx, opts) {
   this.lifespan = Math.floor(randFloat(250, 650));
   this.decayRate = randFloat(0.95, 0.99);
   this.ageRatio = 1;
-  this.colors = chroma.scale(['white', 'magenta'])
+  this.colors = chroma.scale(['white', opts.color])
     .domain([this.age, this.lifespan], 15, 'log');
 };
 

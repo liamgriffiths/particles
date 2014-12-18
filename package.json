@@ -6,10 +6,10 @@
     "node": "0.11.x"
   },
   "scripts": {
-    "start": "node demo",
+    "start": "node server",
     "postinstall": "npm run build",
-    "watchify": "watchify -t [reactify --es6] ./src/index.js -o ./demo/bundle.js",
-    "build": "browserify -t [reactify --es6] ./src/index.js | uglifyjs -mc 2> /dev/null 1> ./demo/bundle.js"
+    "watchify": "watchify -t [reactify --es6] ./src/index.js -o ./build/bundle.js --verbose",
+    "build": "browserify -t [reactify --es6] ./src/index.js | uglifyjs -mc 2> /dev/null 1> ./build/bundle.js"
   },
   "keywords": [
     "particles"
