@@ -1,5 +1,6 @@
 var React = require('react');
 var Animation = require('./animation');
+var {requestAnimationFrame} = require('./helpers');
 
 var BLACK = '#000';
 
@@ -23,35 +24,45 @@ var Canvas = React.createClass({
     });
 
     this.animation.run();
+    this.handleInputs();
   },
 
-  setTouch(event) {
-    var {pageX, pageY} = event.nativeEvent.touches[0];
-    this.touchX = pageX;
-    this.touchY = pageY;
+  setTouches(event) {
+    var touches = event.touches;
+    this.touches = [];
+    for (var i = 0; i < touches.length; i++) {
+      this.touches.push({
+        x: touches[i].pageX,
+        y: touches[i].pageY
+      });
+    }
   },
 
-  getTouch() {
-    return {x: this.touchX, y: this.touchY};
+  getTouches() {
+    return this.touches || [];
+  },
+
+  handleInputs() {
+    var touches = this.getTouches();
+    for (var i = 0; i < touches.length; i++) {
+      this.animation.particleController.add({x: touches[i].x, y: touches[i].y});
+    }
+    requestAnimationFrame(this.handleInputs);
   },
 
   handleTouchStart(event) {
     event.preventDefault();
-    this.setTouch(event);
-    this.touching = setInterval(_ => {
-      this.animation.particleController.add(this.getTouch());
-    }, 1);
+    this.setTouches(event);
   },
 
   handleTouchMove(event) {
     event.preventDefault();
-    this.setTouch(event);
-    this.animation.particleController.add(this.getTouch());
+    this.setTouches(event);
   },
 
   handleTouchEnd(event) {
     event.preventDefault();
-    clearInterval(this.touching);
+    this.setTouches(event);
   },
 
   render() {

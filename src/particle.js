@@ -20,7 +20,7 @@ var Particle = function(ctx, opts) {
 
 Particle.prototype = {
   isDead() {
-    return this.age > this.lifespan;
+    return this.age > this.lifespan || this.size < 1;
   },
 
   update() {
