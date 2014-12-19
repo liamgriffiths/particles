@@ -6,7 +6,7 @@ var {requestAnimationFrame} = require('./helpers');
 
 type Point = { x: number; y: number };
 type Event = Object; // window.Event
-type Touch = {pageX: number; pageY: number};
+type Touch = { pageX: number; pageY: number };
 
 var _touches : Array<Touch> = [];
 var _animation : Animation;
@@ -29,7 +29,7 @@ var Canvas = React.createClass({
     _animation = new Animation(ctx, {
       width: canvas.width,
       height: canvas.height,
-    });
+    }).run();
 
     this.handleInputs();
   },
@@ -39,7 +39,9 @@ var Canvas = React.createClass({
   },
 
   getTouches() : Array<Point> {
-    return _touches.map(touch => ({ x: touch.pageX, y: touch.pageY }));
+    return _touches.map(touch => {
+      return { x: touch.pageX, y: touch.pageY };
+    });
   },
 
   handleInputs() {
