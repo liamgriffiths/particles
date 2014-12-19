@@ -16,11 +16,7 @@ Animation.prototype = {
   handleInputs(inputs) {
     if (inputs.touches) {
       inputs.touches.forEach((touch, i) => {
-        var point = {
-          x: touch.x + randFloat(-10, 10),
-          y: touch.y + randFloat(-10, 10)
-        };
-        this.particleController.add(point, i)
+        this.particleController.add(touch, i)
       });
     }
   },

@@ -13,7 +13,10 @@ var ParticleController = function(ctx, opts) {
 ParticleController.prototype = {
   add(position, color) {
     var p = new Particle(this.ctx, {
-      position: {x: position.x, y: position.y },
+      position: {
+        x: position.x + randFloat(-20, 20),
+        y: position.y + randFloat(-20, 20)
+      },
       velocity: {x: randFloat(1, 5), y: randFloat(1, 5)},
       direction: {x: randFloat(-1, 1), y: randFloat(-1, 1)},
       color: COLORS[color % COLORS.length]
