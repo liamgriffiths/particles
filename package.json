@@ -20,7 +20,6 @@
     "browserify": "7.0.2",
     "chroma-js": "0.6.2",
     "envify": "3.2.0",
-    "immutable": "3.4.0",
     "react": "0.12.1",
     "reactify": "0.17.1",
     "simplex-noise": "2.1.1",

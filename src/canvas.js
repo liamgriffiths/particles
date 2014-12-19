@@ -1,7 +1,6 @@
 var React = require('react');
 var Animation = require('./animation');
-var {requestAnimationFrame, Point} = require('./helpers');
-var {List} = require('immutable');
+var {requestAnimationFrame} = require('./helpers');
 
 var Canvas = React.createClass({
   propTypes: {
@@ -27,18 +26,16 @@ var Canvas = React.createClass({
   },
 
   setTouches(event) {
-    this._touches = new List([].slice.apply(event.touches));
+    this._touches = [].slice.apply(event.touches);
   },
 
   getTouches() {
     return (this._touches || [])
-      .map(touch => new Point({ x: touch.pageX, y: touch.pageY }));
+      .map(touch => ({ x: touch.pageX, y: touch.pageY }));
   },
 
   handleInputs() {
-    this.getTouches()
-      .forEach((point, i) => this.animation.particleController.add(point, i));
-
+    this.animation.handleInputs({ touches: this.getTouches() });
     return requestAnimationFrame(this.handleInputs);
   },
 

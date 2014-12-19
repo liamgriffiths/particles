@@ -1,5 +1,5 @@
 var ParticleController = require('./particle_controller');
-var {requestAnimationFrame} = require('./helpers');
+var {requestAnimationFrame, randFloat} = require('./helpers');
 
 var Animation = function(ctx, opts) {
   this.ctx = ctx;
@@ -13,6 +13,18 @@ var Animation = function(ctx, opts) {
 };
 
 Animation.prototype = {
+  handleInputs(inputs) {
+    if (inputs.touches) {
+      inputs.touches.forEach((touch, i) => {
+        var point = {
+          x: touch.x + randFloat(-10, 10),
+          y: touch.y + randFloat(-10, 10)
+        };
+        this.particleController.add(point, i)
+      });
+    }
+  },
+
   update() {
     this.particleController.update();
   },

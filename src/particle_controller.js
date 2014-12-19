@@ -1,6 +1,5 @@
 var Particle = require('./particle');
-var {randFloat, Point} = require('./helpers');
-var {List} = require('immutable');
+var {randFloat} = require('./helpers');
 
 var COLORS = ['magenta', 'cyan', 'limegreen', 'lemonchiffon', 'red'];
 
@@ -8,7 +7,7 @@ var ParticleController = function(ctx, opts) {
   this.ctx = ctx;
   this.width = opts.width;
   this.height = opts.height;
-  this.particles = new List();
+  this.particles = [];
 };
 
 ParticleController.prototype = {
@@ -20,7 +19,7 @@ ParticleController.prototype = {
       color: COLORS[color % COLORS.length]
     });
 
-    this.particles = this.particles.push(p);
+    this.particles.push(p);
   },
 
   removeDeadParticles() {
@@ -29,11 +28,15 @@ ParticleController.prototype = {
 
   update() {
     this.removeDeadParticles();
-    this.particles.forEach(p => p.update());
+    for (var i = 0; i < this.particles.length; i++) {
+      this.particles[i].update();
+    }
   },
 
   draw() {
-    this.particles.forEach(p => p.draw());
+    for (var i = 0; i < this.particles.length; i++) {
+      this.particles[i].draw();
+    }
   },
 };
 
