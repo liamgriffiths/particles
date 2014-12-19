@@ -1,8 +1,18 @@
+/* @flow */
+
 var React = require('react');
 var Animation = require('./animation');
 var {requestAnimationFrame} = require('./helpers');
 
+type Point = { x: number; y: number };
+type Event = Object; // window.Event
+type Touch = {pageX: number; pageY: number};
+
+var _touches : Array<Touch> = [];
+var _animation : Animation;
+
 var Canvas = React.createClass({
+
   propTypes: {
     width: React.PropTypes.number.isRequired,
     height: React.PropTypes.number.isRequired
@@ -16,45 +26,43 @@ var Canvas = React.createClass({
     canvas.height = window.innerHeight;
     canvas.style.background = '#000';
 
-    this.animation = new Animation(ctx, {
+    _animation = new Animation(ctx, {
       width: canvas.width,
       height: canvas.height,
     });
 
-    this.animation.run();
     this.handleInputs();
   },
 
-  setTouches(event) {
-    this._touches = [].slice.apply(event.touches);
+  setTouches: function(e : Event) {
+    _touches = e.touches ? [].slice.call(e.touches) : [];
   },
 
-  getTouches() {
-    return (this._touches || [])
-      .map(touch => ({ x: touch.pageX, y: touch.pageY }));
+  getTouches() : Array<Point> {
+    return _touches.map(touch => ({ x: touch.pageX, y: touch.pageY }));
   },
 
   handleInputs() {
-    this.animation.handleInputs({ touches: this.getTouches() });
-    return requestAnimationFrame(this.handleInputs);
+    if (_animation) _animation.handleInputs({ touches: this.getTouches() });
+    requestAnimationFrame(this.handleInputs);
   },
 
-  handleTouchStart(event) {
-    event.preventDefault();
-    this.setTouches(event);
+  handleTouchStart(e : Event) {
+    e.preventDefault();
+    this.setTouches(e);
   },
 
-  handleTouchMove(event) {
-    event.preventDefault();
-    this.setTouches(event);
+  handleTouchMove(e : Event) {
+    e.preventDefault();
+    this.setTouches(e);
   },
 
-  handleTouchEnd(event) {
-    event.preventDefault();
-    this.setTouches(event);
+  handleTouchEnd(e : Event) {
+    e.preventDefault();
+    this.setTouches(e);
   },
 
-  render() {
+  render() : ?ReactElement {
     return <canvas ref="canvas"
       onTouchStart={this.handleTouchStart}
       onTouchMove={this.handleTouchMove}

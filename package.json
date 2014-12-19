@@ -8,8 +8,8 @@
   "scripts": {
     "start": "node server",
     "postinstall": "npm run build",
-    "watchify": "watchify -t [reactify --es6] ./src/index.js -o ./bundle.js --verbose",
-    "build": "browserify -t [reactify --es6] ./src/index.js | uglifyjs -mc 2> /dev/null 1> bundle.js"
+    "watchify": "watchify -t [reactify --strip-types --es6] ./src/index.js -o ./bundle.js --verbose",
+    "build": "browserify -t [reactify --strip-types --es6] ./src/index.js | uglifyjs -mc 2> /dev/null 1> bundle.js"
   },
   "keywords": [
     "particles"
