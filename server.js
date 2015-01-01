@@ -1,21 +1,25 @@
-var http = require('http');
-var fs = require('fs');
+'use strict';
 
-var assets = {
-  '/': __dirname + '/index.html',
-  '/bundle.js': __dirname + '/bundle.js'
+const http = require('http');
+const fs = require('fs');
+
+const port = process.env.PORT || 3000;
+
+const serve = (file) => (req, res) =>
+  fs.createReadStream(file).pipe(res);
+
+const handlers = {
+  '/': serve(__dirname + '/index.html'),
+  '/bundle.js': serve(__dirname + '/bundle.js')
 };
 
-var port = process.env.PORT || 3000;
-
-var server = http.createServer(function(req, res) {
-  if (req.url in assets) {
-    fs.createReadStream(assets[req.url]).pipe(res);
+const server = http.createServer((req, res) => {
+  let handler = handlers[req.url];
+  if (handler) {
+    handler(req, res);
   } else {
     res.end();
   }
 });
 
-server.listen(port, function() {
-  console.log('listening on', port);
-});
+server.listen(port, () => console.log('listening on', port));
