@@ -24,13 +24,13 @@ var memoize = (fn) => {
   }
 };
 
-var createGradient = (ctx, x, y, size, color) => {
+var createGradient = memoize((ctx, x, y, size, color) => {
   var gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
   gradient.addColorStop(0.0, '#ffffff');
   gradient.addColorStop(0.5, '#ffffff');
   gradient.addColorStop(1.0, color);
   return gradient;
-};
+});
 
 
 module.exports = {
