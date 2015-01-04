@@ -1,4 +1,4 @@
-var {randFloat, createGradient, hash} = require('./helpers');
+var {randFloat, createGradient, Map} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 
@@ -21,7 +21,7 @@ var Particle = function(ctx, opts) {
   this.color = opts.color;
 };
 
-Particle.images = {};
+Particle.images = new Map();
 Particle.preRender = (color) => {
   for (var i = MIN_SIZE; i <= MAX_SIZE; i += Math.pow(10, -PRECISION)) {
     var size = +i.toFixed(PRECISION);
@@ -38,9 +38,8 @@ Particle.preRender = (color) => {
     context.arc(x, y, size, 0, 2 * Math.PI, false);
     context.fill();
     context.closePath();
-
-    var key = hash([size, color].join(''));
-    Particle.images[key] = canvas;
+    var key = [size, color].join('');
+    Particle.images.set(key, canvas);
   }
 };
 
@@ -70,8 +69,8 @@ Particle.prototype = {
   draw() {
     if (this.size) {
       var { x, y } = this.position;
-      var key = hash([this.size, this.color].join(''));
-      this.ctx.drawImage(Particle.images[key], x - this.size, y - this.size);
+      var key = [this.size, this.color].join('');
+      this.ctx.drawImage(Particle.images.get(key), x - this.size, y - this.size);
     }
   }
 };

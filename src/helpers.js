@@ -11,7 +11,7 @@ var randFloat = (min, max) =>
 var hash = (input) =>
   input.toString().split('')
     .map(char => char.charCodeAt(0))
-    .reduce((hash, char) => hash = (((hash << 5) - hash) + char) | 0, 0);
+    .reduce((hash, char) => hash = (((hash << 5) - hash) + char) >>> 0, 0);
 
 var memoize = (fn) => {
   var cache = {};
@@ -32,11 +32,24 @@ var createGradient = (ctx, x, y, size, color) => {
   return gradient;
 };
 
+function Map() {
+  this._values = new Array(~(1 << 31));
+}
+
+Map.prototype = {
+  get(key) {
+    return this._values[hash(key)];
+  },
+
+  set(key, val) {
+    this._values[hash(key)] = val;
+  }
+}
 
 module.exports = {
   requestAnimationFrame,
   randFloat,
   createGradient,
   memoize,
-  hash
+  Map
 };
