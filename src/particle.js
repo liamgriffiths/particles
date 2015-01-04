@@ -2,8 +2,9 @@ var {randFloat, createGradient, hash} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 
-var MIN_SIZE = 1;
+var PRECISION = 1;
 var MAX_SIZE = 25;
+var MIN_SIZE = Math.pow(10, -PRECISION);
 
 var Particle = function(ctx, opts) {
   this.ctx = ctx;
@@ -13,7 +14,7 @@ var Particle = function(ctx, opts) {
 
   this.size = randFloat(MAX_SIZE/2, MAX_SIZE) | 0;
   this.age = 1;
-  this.lifespan = Math.floor(randFloat(700, 1000)) + 300;
+  this.lifespan = Math.floor(randFloat(300, 600)) + 300;
   this.decayRate = 0.99;
   this.ageRatio = 1;
 
@@ -22,8 +23,8 @@ var Particle = function(ctx, opts) {
 
 Particle.images = {};
 Particle.preRender = (color) => {
-  for (var i = MIN_SIZE; i <= MAX_SIZE; i++) {
-    var size = i;
+  for (var i = MIN_SIZE; i <= MAX_SIZE; i += Math.pow(10, -PRECISION)) {
+    var size = +i.toFixed(PRECISION);
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
     canvas.width = size * 2;
@@ -63,8 +64,7 @@ Particle.prototype = {
     this.position.y += this.direction.y * this.velocity.y;
 
     this.age += 1.0 * this.decayRate;
-    this.size *= this.ageRatio;
-    this.size = this.size | 0;
+    this.size = +(this.size * this.ageRatio).toFixed(PRECISION);
   },
 
   draw() {
