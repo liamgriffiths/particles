@@ -1,4 +1,4 @@
-var {randFloat, createGradient, Map} = require('./helpers');
+var {randFloat, createGradient, HashMap} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 
@@ -21,7 +21,7 @@ var Particle = function(ctx, opts) {
   this.color = opts.color;
 };
 
-Particle.images = new Map();
+Particle.images = new HashMap();
 Particle.preRender = (color) => {
   for (var i = MIN_SIZE; i <= MAX_SIZE; i += Math.pow(10, -PRECISION)) {
     var size = +i.toFixed(PRECISION);
@@ -33,8 +33,13 @@ Particle.preRender = (color) => {
     var x = canvas.width / 2;
     var y = canvas.height / 2;
 
+    var gradient = context.createRadialGradient(x, y, 0, x, y, size);
+    gradient.addColorStop(0.0, '#ffffff');
+    gradient.addColorStop(0.5, '#ffffff');
+    gradient.addColorStop(1.0, color);
+
     context.beginPath();
-    context.fillStyle = createGradient(context, x, y, size, color);
+    context.fillStyle = gradient;
     context.arc(x, y, size, 0, 2 * Math.PI, false);
     context.fill();
     context.closePath();
