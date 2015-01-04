@@ -1,23 +1,18 @@
 var ParticleController = require('./particle_controller');
 var {requestAnimationFrame, randFloat} = require('./helpers');
 
-var Animation = function(ctx, opts) {
+var Animation = function(ctx, {width, height}) {
   this.ctx = ctx;
-  this.width = opts.width;
-  this.height = opts.height;
+  this.width = width;
+  this.height = height;
 
-  this.particleController = new ParticleController(this.ctx, {
-    width: this.width,
-    height: this.height
-  });
+  this.particleController = new ParticleController(this.ctx, {width, height});
 };
 
 Animation.prototype = {
   handleInputs(inputs) {
-    if (inputs) {
-      for (var i = 0; i < inputs.length; i++) {
-        this.particleController.add(inputs[i], i);
-      }
+    for (var i = 0; i < inputs.length; i++) {
+      this.particleController.add(inputs[i], i);
     }
   },
 
