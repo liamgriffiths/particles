@@ -1,4 +1,4 @@
-var randFloat = require('./helpers').randFloat;
+var {randFloat, createGradient} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 var chroma = require('chroma-js');
@@ -15,7 +15,7 @@ var Particle = function(ctx, opts) {
   this.decayRate = 0.99;
   this.ageRatio = 1;
 
-  this.color = chroma(opts.color);
+  this.color = chroma(opts.color).alpha(0).css();
 };
 
 Particle.prototype = {
@@ -43,13 +43,8 @@ Particle.prototype = {
 
   draw() {
     var { x, y } = this.position;
-
     this.ctx.beginPath();
-    var gradient = this.ctx.createRadialGradient(x, y, 0, x, y, this.size);
-    gradient.addColorStop(0.0, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(1.0, this.color.alpha(0).css());
-    this.ctx.fillStyle = gradient;
+    this.ctx.fillStyle = createGradient(this.ctx, x, y, this.size, this.color);
     this.ctx.arc(x, y, this.size, 0, 2 * Math.PI, false);
     this.ctx.fill();
     this.ctx.closePath();
