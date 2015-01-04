@@ -31,7 +31,7 @@ Particle.createTmpCanvas = (size) => {
   return canvas;
 };
 
-Particle.createRadialGradient = (ctx, x, y, size, color) {
+Particle.createRadialGradient = (ctx, x, y, size, color) => {
   var gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
   gradient.addColorStop(0.0, WHITE);
   gradient.addColorStop(0.5, WHITE);
@@ -47,7 +47,7 @@ Particle.preRender = (color) => {
     var [x, y] = [canvas.width / 2, canvas.height / 2];
 
     ctx.beginPath();
-    ctx.fillStyle = Particle.createRadialGradient(context, x, y, size, color);
+    ctx.fillStyle = Particle.createRadialGradient(ctx, x, y, size, color);
     ctx.arc(x, y, size, 0, TWO_PI, false);
     ctx.fill();
     ctx.closePath();
