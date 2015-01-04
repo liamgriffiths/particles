@@ -14,10 +14,10 @@ var Animation = function(ctx, opts) {
 
 Animation.prototype = {
   handleInputs(inputs) {
-    if (inputs.touches) {
-      inputs.touches.forEach((touch, i) => {
-        this.particleController.add(touch, i)
-      });
+    if (inputs) {
+      for (var i = 0; i < inputs.length; i++) {
+        this.particleController.add(inputs[i], i);
+      }
     }
   },
 

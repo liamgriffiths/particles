@@ -9,14 +9,13 @@ var Particle = function(ctx, opts) {
   this.velocity = opts.velocity;
   this.direction = opts.direction;
 
-  this.size = randFloat(5, 20);
+  this.size = randFloat(10, 25);
   this.age = 1;
-  this.lifespan = Math.floor(randFloat(250, 650));
-  this.decayRate = randFloat(0.95, 0.99);
+  this.lifespan = Math.floor(randFloat(300, 600)) + 300;
+  this.decayRate = 0.99;
   this.ageRatio = 1;
 
-  this.colors = chroma.scale(['white', opts.color])
-    .domain([this.age, this.lifespan], 15, 'log');
+  this.color = chroma(opts.color);
 };
 
 Particle.prototype = {
@@ -29,6 +28,9 @@ Particle.prototype = {
 
     var noise = simplex.noise3D(this.position.x, this.position.y, _GET_ELAPSED_TIME());
 
+    this.direction.x += noise * randFloat(0.1, 0.5);
+    this.direction.y += noise * randFloat(0.1, 0.5);
+
     this.velocity.x *= this.decayRate + (noise * 0.01);
     this.velocity.y *= this.decayRate + (noise * 0.01);
 
@@ -40,13 +42,15 @@ Particle.prototype = {
   },
 
   draw() {
-    var color = this.colors(Math.floor(this.age))
-      .alpha(this.ageRatio * 0.9)
-      .css();
+    var { x, y } = this.position;
 
     this.ctx.beginPath();
-    this.ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI, false);
-    this.ctx.fillStyle = color;
+    var gradient = this.ctx.createRadialGradient(x, y, 0, x, y, this.size);
+    gradient.addColorStop(0.0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(1.0, this.color.alpha(0).css());
+    this.ctx.fillStyle = gradient;
+    this.ctx.arc(x, y, this.size, 0, 2 * Math.PI, false);
     this.ctx.fill();
     this.ctx.closePath();
   }

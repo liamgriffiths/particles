@@ -17,7 +17,7 @@ ParticleController.prototype = {
         x: position.x + randFloat(-20, 20),
         y: position.y + randFloat(-20, 20)
       },
-      velocity: {x: randFloat(1, 5), y: randFloat(1, 5)},
+      velocity: {x: randFloat(1, 3), y: randFloat(1, 3)},
       direction: {x: randFloat(-1, 1), y: randFloat(-1, 1)},
       color: COLORS[color % COLORS.length]
     });
