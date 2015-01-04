@@ -1,13 +1,19 @@
 var Particle = require('./particle');
-var {randFloat} = require('./helpers');
+var {randFloat, hash} = require('./helpers');
+var chroma = require('chroma-js');
 
-var COLORS = ['magenta', 'cyan', 'limegreen', 'lemonchiffon', 'red'];
+
+var COLORS = ['magenta', 'cyan', 'limegreen', 'lemonchiffon', 'red']
+  .map(c => chroma(c).alpha(0).css());
 
 var ParticleController = function(ctx, opts) {
   this.ctx = ctx;
   this.width = opts.width;
   this.height = opts.height;
   this.particles = [];
+
+
+  COLORS.forEach(c => Particle.preRender(c));
 };
 
 ParticleController.prototype = {

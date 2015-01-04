@@ -1,7 +1,9 @@
-var {randFloat, createGradient} = require('./helpers');
+var {randFloat, createGradient, hash} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
-var chroma = require('chroma-js');
+
+var MIN_SIZE = 1;
+var MAX_SIZE = 25;
 
 var Particle = function(ctx, opts) {
   this.ctx = ctx;
@@ -9,13 +11,36 @@ var Particle = function(ctx, opts) {
   this.velocity = opts.velocity;
   this.direction = opts.direction;
 
-  this.size = randFloat(10, 25);
+  this.size = randFloat(MAX_SIZE/2, MAX_SIZE) | 0;
   this.age = 1;
-  this.lifespan = Math.floor(randFloat(300, 600)) + 300;
+  this.lifespan = Math.floor(randFloat(700, 1000)) + 300;
   this.decayRate = 0.99;
   this.ageRatio = 1;
 
-  this.color = chroma(opts.color).alpha(0).css();
+  this.color = opts.color;
+};
+
+Particle.images = {};
+Particle.preRender = (color) => {
+  for (var i = MIN_SIZE; i <= MAX_SIZE; i++) {
+    var size = i;
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    canvas.width = size * 2;
+    canvas.height = size * 2;
+
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
+
+    context.beginPath();
+    context.fillStyle = createGradient(context, x, y, size, color);
+    context.arc(x, y, size, 0, 2 * Math.PI, false);
+    context.fill();
+    context.closePath();
+
+    var key = hash([size, color].join(''));
+    Particle.images[key] = canvas;
+  }
 };
 
 Particle.prototype = {
@@ -39,15 +64,15 @@ Particle.prototype = {
 
     this.age += 1.0 * this.decayRate;
     this.size *= this.ageRatio;
+    this.size = this.size | 0;
   },
 
   draw() {
-    var { x, y } = this.position;
-    this.ctx.beginPath();
-    this.ctx.fillStyle = createGradient(this.ctx, x, y, this.size, this.color);
-    this.ctx.arc(x, y, this.size, 0, 2 * Math.PI, false);
-    this.ctx.fill();
-    this.ctx.closePath();
+    if (this.size) {
+      var { x, y } = this.position;
+      var key = hash([this.size, this.color].join(''));
+      this.ctx.drawImage(Particle.images[key], x - this.size, y - this.size);
+    }
   }
 };
 
