@@ -1,6 +1,9 @@
 var React = require('react');
 var Animation = require('./animation');
 var {requestAnimationFrame} = require('./helpers');
+var slice = Array.prototype.slice;
+
+var BG_COLOR = BLACK = '#000000';
 
 var Canvas = React.createClass({
 
@@ -13,10 +16,9 @@ var Canvas = React.createClass({
     var canvas = this.refs.canvas.getDOMNode();
     var ctx = canvas.getContext('2d');
 
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    canvas.style.background = '#000';
+    canvas.style.background = BG_COLOR;
     ctx.globalCompositeOperation = 'lighter';
 
     this.animation = new Animation(ctx, {
@@ -30,7 +32,7 @@ var Canvas = React.createClass({
 
   setTouches: function(e) {
     e.preventDefault();
-    this._touches = e.touches ? [].slice.call(e.touches) : [];
+    this._touches = e.touches ? slice.call(e.touches) : [];
   },
 
   getTouches() {
