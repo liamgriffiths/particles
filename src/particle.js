@@ -8,19 +8,18 @@ var MIN_SIZE = Math.pow(10, -PRECISION);
 var TWO_PI = 2 * Math.PI;
 var WHITE = '#ffffff';
 
-var Particle = function(ctx, opts) {
+var Particle = function(ctx, {position, velocity, direction, color}) {
   this.ctx = ctx;
-  this.position = opts.position
-  this.velocity = opts.velocity;
-  this.direction = opts.direction;
+  this.position = position
+  this.velocity = velocity;
+  this.direction = direction;
+  this.color = color;
 
   this.size = randFloat(MAX_SIZE / 2, MAX_SIZE) | 0;
   this.age = 1;
-  this.lifespan = Math.floor(randFloat(300, 600)) + 300;
+  this.lifespan = randFloat(600, 900) | 0;
   this.decayRate = 0.99;
   this.ageRatio = 1;
-
-  this.color = opts.color;
 };
 
 Particle.images = new HashMap();
@@ -41,8 +40,7 @@ Particle.preRender = (color) => {
     canvas.width = size * 2;
     canvas.height = size * 2;
 
-    var x = canvas.width / 2;
-    var y = canvas.height / 2;
+    var [x, y] = [canvas.width / 2, canvas.height / 2];
 
     ctx.beginPath();
     ctx.fillStyle = Particle.createRadialGradient(ctx, x, y, size, color);
@@ -55,7 +53,7 @@ Particle.preRender = (color) => {
 
 Particle.prototype = {
   isDead() {
-    return this.age > this.lifespan || this.size < 1;
+    return this.age > this.lifespan || this.size < MIN_SIZE;
   },
 
   update() {
@@ -78,7 +76,7 @@ Particle.prototype = {
 
   draw() {
     if (this.size) {
-      var [x, y] = [this.position.x - this.size, this.position.y = this.size];
+      var [x, y] = [this.position.x - this.size, this.position.y - this.size];
       var image = Particle.images.get([this.size, this.color]);
       this.ctx.drawImage(image, x, y);
     }
