@@ -66,8 +66,8 @@ Particle.prototype = {
 
     var noise = simplex.noise3D(this.position.x, this.position.y, getTime());
 
-    this.direction.x = clamp(this.direction.x + noise * randFloat(0.1, 0.5), -1, 1);
-    this.direction.y = clamp(this.direction.y + noise * randFloat(0.1, 0.5), -1, 1);
+    this.direction.x = clamp(this.direction.x + noise * randFloat(0.1, 0.3), -1, 1);
+    this.direction.y = clamp(this.direction.y + noise * randFloat(0.1, 0.3), -1, 1);
 
     this.velocity.x = (this.velocity.x * this.ageRatio) + (noise * 0.01);
     this.velocity.y = (this.velocity.y * this.ageRatio) + (noise * 0.01);

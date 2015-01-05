@@ -18,13 +18,10 @@ var hash = (val) =>
   JSON.stringify(val)
     .split('')
     .map(char => char.charCodeAt(0))
-    .reduce((hash, code) => {
-      hash = ((hash << 5) - hash) + code;
-      return hash & hash;
-    }, 0);
+    .reduce((hash, code) => (((hash << 5) - hash) + code) >>> 0, 0);
 
 function HashMap() {
-  this.values = [];
+  this.values = {};
 }
 
 HashMap.prototype = {
