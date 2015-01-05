@@ -5,7 +5,7 @@ var simplex = new SimplexNoise(Math.random);
 var PRECISION = 1;
 var MAX_SIZE = 25;
 var MIN_SIZE = Math.pow(10, -PRECISION);
-
+var TWO_PI = 2 * Math.PI;
 var WHITE = '#ffffff';
 
 var Particle = function(ctx, opts) {
@@ -14,7 +14,7 @@ var Particle = function(ctx, opts) {
   this.velocity = opts.velocity;
   this.direction = opts.direction;
 
-  this.size = randFloat(MAX_SIZE/2, MAX_SIZE) | 0;
+  this.size = randFloat(MAX_SIZE / 2, MAX_SIZE) | 0;
   this.age = 1;
   this.lifespan = Math.floor(randFloat(300, 600)) + 300;
   this.decayRate = 0.99;
@@ -37,18 +37,18 @@ Particle.preRender = (color) => {
   for (var i = MIN_SIZE; i <= MAX_SIZE; i += MIN_SIZE) {
     var size = +i.toFixed(PRECISION);
     var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
+    var ctx = canvas.getContext('2d');
     canvas.width = size * 2;
     canvas.height = size * 2;
 
     var x = canvas.width / 2;
     var y = canvas.height / 2;
 
-    context.beginPath();
-    context.fillStyle = Particle.createRadialGradient(context, x, y, size, color);
-    context.arc(x, y, size, 0, 2 * Math.PI, false);
-    context.fill();
-    context.closePath();
+    ctx.beginPath();
+    ctx.fillStyle = Particle.createRadialGradient(ctx, x, y, size, color);
+    ctx.arc(x, y, size, 0, TWO_PI, false);
+    ctx.fill();
+    ctx.closePath();
     Particle.images.set([size, color], canvas);
   }
 };
@@ -78,9 +78,9 @@ Particle.prototype = {
 
   draw() {
     if (this.size) {
-      var { x, y } = this.position;
+      var [x, y] = [this.position.x - this.size, this.position.y = this.size];
       var image = Particle.images.get([this.size, this.color]);
-      this.ctx.drawImage(image, x - this.size, y - this.size);
+      this.ctx.drawImage(image, x, y);
     }
   }
 };
