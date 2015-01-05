@@ -5,7 +5,6 @@ var Animation = function(ctx, {width, height}) {
   this.ctx = ctx;
   this.width = width;
   this.height = height;
-
   this.particleController = new ParticleController(this.ctx, {width, height});
 };
 

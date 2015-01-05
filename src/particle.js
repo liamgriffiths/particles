@@ -1,4 +1,4 @@
-var {randFloat, createGradient, HashMap} = require('./helpers');
+var {randFloat, clamp, HashMap} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 
@@ -68,14 +68,16 @@ Particle.prototype = {
 
     this.direction.x += noise * randFloat(0.1, 0.5);
     this.direction.y += noise * randFloat(0.1, 0.5);
+    this.direction.x = clamp(this.direction.x, -1, 1);
+    this.direction.y = clamp(this.direction.y, -1, 1);
 
-    this.velocity.x *= this.decayRate + (noise * 0.01);
-    this.velocity.y *= this.decayRate + (noise * 0.01);
+    this.velocity.x = (this.velocity.x * this.ageRatio);
+    this.velocity.y = (this.velocity.y * this.ageRatio);
 
     this.position.x += this.direction.x * this.velocity.x;
     this.position.y += this.direction.y * this.velocity.y;
 
-    this.age += 1.0 * this.decayRate;
+    this.age += 1 * this.decayRate;
     this.size = +(this.size * this.ageRatio).toFixed(PRECISION);
   },
 

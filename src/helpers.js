@@ -6,6 +6,9 @@ var requestAnimationFrame = window.requestAnimationFrame ||
 var randFloat = (min, max) =>
   Math.random() * (max - min) + min;
 
+var clamp = (val, min, max) =>
+  Math.min(max, Math.max(min, val));
+
 var hash = (val) =>
   JSON.stringify(val)
     .split('')
@@ -29,5 +32,6 @@ HashMap.prototype = {
 module.exports = {
   requestAnimationFrame,
   randFloat,
+  clamp,
   HashMap
 };

@@ -24,7 +24,8 @@ var Canvas = React.createClass({
     this.animation = new Animation(ctx, {
       width: canvas.width,
       height: canvas.height,
-    }).run();
+    });
+    this.animation.run();
 
     this._touches = [];
     this.handleInputs();
