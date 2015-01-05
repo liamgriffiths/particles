@@ -8,12 +8,12 @@ var MIN_SIZE = Math.pow(10, -PRECISION);
 var TWO_PI = 2 * Math.PI;
 var WHITE = '#ffffff';
 
-var Particle = function(ctx, {position, velocity, direction, color}) {
+var Particle = function(ctx, opts) {
   this.ctx = ctx;
-  this.position = position
-  this.velocity = velocity;
-  this.direction = direction;
-  this.color = color;
+  this.position = opts.position
+  this.velocity = opts.velocity;
+  this.direction = opts.direction;
+  this.color = opts.color;
 
   this.size = randFloat(MAX_SIZE / 2, MAX_SIZE) | 0;
   this.age = 1;
