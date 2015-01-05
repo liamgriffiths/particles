@@ -1,79 +1,60 @@
-var {randFloat, clamp, HashMap, getTime} = require('./helpers');
+var {randFloat, createGradient, Map} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 
 var PRECISION = 1;
 var MAX_SIZE = 25;
 var MIN_SIZE = Math.pow(10, -PRECISION);
-var WHITE = '#ffffff';
-var TWO_PI = 2 * Math.PI;
 
-var Particle = function(ctx, {position, velocity, direction, color}) {
+var Particle = function(ctx, opts) {
   this.ctx = ctx;
-  this.position = position
-  this.velocity = velocity;
-  this.direction = direction;
-  this.color = color;
+  this.position = opts.position
+  this.velocity = opts.velocity;
+  this.direction = opts.direction;
 
-  this.size = +(randFloat(MAX_SIZE / 2, MAX_SIZE)).toFixed(PRECISION);
+  this.size = randFloat(MAX_SIZE/2, MAX_SIZE) | 0;
   this.age = 1;
   this.lifespan = Math.floor(randFloat(300, 600)) + 300;
   this.decayRate = 0.99;
   this.ageRatio = 1;
+
+  this.color = opts.color;
 };
 
-Particle.images = new HashMap(); // store pre-rendered image frames
-
-Particle.createTmpCanvas = (size) => {
-  var canvas = document.createElement('canvas');
-  canvas.width = size * 2;
-  canvas.height = size * 2;
-  return canvas;
-};
-
-Particle.createRadialGradient = (ctx, x, y, size, color) => {
-  var gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
-  gradient.addColorStop(0.0, WHITE);
-  gradient.addColorStop(0.5, WHITE);
-  gradient.addColorStop(1.0, color);
-  return gradient;
-}
-
+Particle.images = new Map();
 Particle.preRender = (color) => {
-  for (var i = MIN_SIZE; i <= MAX_SIZE + MIN_SIZE; i += MIN_SIZE) {
+  for (var i = MIN_SIZE; i <= MAX_SIZE; i += Math.pow(10, -PRECISION)) {
     var size = +i.toFixed(PRECISION);
-    var canvas = Particle.createTmpCanvas(size);
-    var ctx = canvas.getContext('2d');
-    var [x, y] = [canvas.width / 2, canvas.height / 2];
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    canvas.width = size * 2;
+    canvas.height = size * 2;
 
-    ctx.beginPath();
-    ctx.fillStyle = Particle.createRadialGradient(ctx, x, y, size, color);
-    ctx.arc(x, y, size, 0, TWO_PI, false);
-    ctx.fill();
-    ctx.closePath();
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
 
-    Particle.images.set([size, color], canvas);
+    context.beginPath();
+    context.fillStyle = createGradient(context, x, y, size, color);
+    context.arc(x, y, size, 0, 2 * Math.PI, false);
+    context.fill();
+    context.closePath();
+    var key = [size, color].join('');
+    Particle.images.set(key, canvas);
   }
 };
 
 Particle.prototype = {
   isDead() {
-    return this.age > this.lifespan || this.size < MIN_SIZE;
+    return this.age > this.lifespan || this.size < 1;
   },
 
   update() {
     this.ageRatio = (1 - (this.age / this.lifespan));
 
-    var noise = simplex.noise3D(this.position.x, this.position.y, getTime());
+    var noise = simplex.noise3D(this.position.x, this.position.y, _GET_ELAPSED_TIME());
 
     this.direction.x += noise * randFloat(0.1, 0.5);
     this.direction.y += noise * randFloat(0.1, 0.5);
-    // this.direction.x = clamp(this.direction.x, -1, 1);
-    // this.direction.y = clamp(this.direction.y, -1, 1);
-
-
-    // this.velocity.x = (this.velocity.x * this.ageRatio);
-    // this.velocity.y = (this.velocity.y * this.ageRatio);
 
     this.velocity.x *= this.decayRate + (noise * 0.01);
     this.velocity.y *= this.decayRate + (noise * 0.01);
@@ -81,19 +62,15 @@ Particle.prototype = {
     this.position.x += this.direction.x * this.velocity.x;
     this.position.y += this.direction.y * this.velocity.y;
 
-    this.age += 1 * this.decayRate;
+    this.age += 1.0 * this.decayRate;
     this.size = +(this.size * this.ageRatio).toFixed(PRECISION);
   },
 
   draw() {
     if (this.size) {
-      var [x, y] = [this.position.x - this.size, this.position.y - this.size];
-      var image = Particle.images.get([this.size, this.color]);
-      try{
-      this.ctx.drawImage(image, x, y);
-      }catch(e){
-        alert(e);
-      }
+      var { x, y } = this.position;
+      var key = [this.size, this.color].join('');
+      this.ctx.drawImage(Particle.images.get(key), x - this.size, y - this.size);
     }
   }
 };
