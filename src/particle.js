@@ -54,7 +54,7 @@ Particle.preRender = (color) => {
 
 Particle.prototype = {
   isDead() {
-    return this.age > this.lifespan || this.size < MIN_SIZE;
+    return this.age > this.lifespan || this.size < 1;
   },
 
   update() {
