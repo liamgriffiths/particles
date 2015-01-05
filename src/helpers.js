@@ -18,7 +18,10 @@ var hash = (val) =>
   JSON.stringify(val)
     .split('')
     .map(char => char.charCodeAt(0))
-    .reduce((hash, char) => (((hash << 5) - hash) + char) >>> 0, 0);
+    .reduce((hash, code) => {
+      hash = ((hash << 5) - hash) + code;
+      return hash & hash;
+    }, 0);
 
 function HashMap() {
   this.values = {};
