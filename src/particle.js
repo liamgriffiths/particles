@@ -87,9 +87,14 @@ Particle.prototype = {
 
   draw() {
     if (this.size) {
+      try{
       var [x, y] = [this.position.x - this.size, this.position.y - this.size];
       var image = Particle.images.get([this.size, this.color]);
       this.ctx.drawImage(image, x, y);
+      }catch(e) {
+        alert(JSON.stringify(e));
+        alert(JSON.stringify({ x: x, y: y, size: this.size, image}));
+      }
     }
   }
 };
