@@ -24,7 +24,7 @@ var hash = (val) =>
     }, 0);
 
 function HashMap() {
-  this.values = {};
+  this.values = [];
 }
 
 HashMap.prototype = {
