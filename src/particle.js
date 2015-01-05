@@ -52,6 +52,9 @@ Particle.preRender = (color) => {
     ctx.fill();
     ctx.closePath();
 
+    if (!canvas) {
+      alert('wtf');
+    }
     Particle.images.set([size, color], canvas);
   }
 };
@@ -89,9 +92,7 @@ Particle.prototype = {
     if (this.size) {
       var [x, y] = [this.position.x - this.size, this.position.y - this.size];
       var image = Particle.images.get([this.size, this.color]);
-      if (image) {
-        this.ctx.drawImage(image, x, y);
-      }
+      this.ctx.drawImage(image, x, y);
     }
   }
 };
