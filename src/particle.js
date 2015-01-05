@@ -34,7 +34,7 @@ Particle.createRadialGradient = (ctx, x, y, size, color) => {
 }
 
 Particle.preRender = (color) => {
-  for (var i = MIN_SIZE; i <= MAX_SIZE; i += Math.pow(10, -PRECISION)) {
+  for (var i = MIN_SIZE; i <= MAX_SIZE; i += MIN_SIZE) {
     var size = +i.toFixed(PRECISION);
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
@@ -49,8 +49,7 @@ Particle.preRender = (color) => {
     context.arc(x, y, size, 0, 2 * Math.PI, false);
     context.fill();
     context.closePath();
-    var key = [size, color].join('');
-    Particle.images.set(key, canvas);
+    Particle.images.set([size, color], canvas);
   }
 };
 
@@ -80,8 +79,8 @@ Particle.prototype = {
   draw() {
     if (this.size) {
       var { x, y } = this.position;
-      var key = [this.size, this.color].join('');
-      this.ctx.drawImage(Particle.images.get(key), x - this.size, y - this.size);
+      var image = Particle.images.get([this.size, this.color]);
+      this.ctx.drawImage(image, x - this.size, y - this.size);
     }
   }
 };
