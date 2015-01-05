@@ -9,6 +9,11 @@ var randFloat = (min, max) =>
 var clamp = (val, min, max) =>
   Math.min(max, Math.max(min, val));
 
+var getTime = (() => {
+  var start = +(new Date());
+  return () => +(new Date()) - start;
+})();
+
 var hash = (val) =>
   JSON.stringify(val)
     .split('')
@@ -33,5 +38,6 @@ module.exports = {
   requestAnimationFrame,
   randFloat,
   clamp,
+  getTime,
   HashMap
 };

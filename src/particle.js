@@ -1,4 +1,4 @@
-var {randFloat, clamp, HashMap} = require('./helpers');
+var {randFloat, clamp, HashMap, getTime} = require('./helpers');
 var SimplexNoise = require('simplex-noise');
 var simplex = new SimplexNoise(Math.random);
 
@@ -64,7 +64,7 @@ Particle.prototype = {
   update() {
     this.ageRatio = (1 - (this.age / this.lifespan));
 
-    var noise = simplex.noise3D(this.position.x, this.position.y, _GET_ELAPSED_TIME());
+    var noise = simplex.noise3D(this.position.x, this.position.y, getTime());
 
     this.direction.x += noise * randFloat(0.1, 0.5);
     this.direction.y += noise * randFloat(0.1, 0.5);
