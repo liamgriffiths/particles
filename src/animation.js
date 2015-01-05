@@ -29,7 +29,6 @@ Animation.prototype = {
     this.update();
     this.draw();
     requestAnimationFrame(this.run.bind(this));
-    return this;
   }
 };
 
