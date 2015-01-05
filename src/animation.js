@@ -10,8 +10,10 @@ var Animation = function(ctx, {width, height}) {
 
 Animation.prototype = {
   handleInputs(inputs) {
-    for (var i = 0; i < inputs.length; i++) {
-      this.particleController.add(inputs[i], i);
+    if (inputs) {
+      for (var i = 0; i < inputs.length; i++) {
+        this.particleController.add(inputs[i], i);
+      }
     }
   },
 
