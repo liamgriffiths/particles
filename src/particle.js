@@ -40,7 +40,8 @@ Particle.preRender = (color) => {
     canvas.width = size * 2;
     canvas.height = size * 2;
 
-    var [x, y] = [canvas.width / 2, canvas.height / 2];
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
 
     ctx.beginPath();
     ctx.fillStyle = Particle.createRadialGradient(ctx, x, y, size, color);
